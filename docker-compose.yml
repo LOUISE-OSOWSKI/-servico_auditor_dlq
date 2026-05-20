@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack-sqs
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    environment:
+      - SERVICES=sqs
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+    volumes:
+      - ./init-aws.sh:/docker-entrypoint-initaws.d/init-aws.sh
+    networks:
+      - app-network
+
+  h2-console:
+    image: oscarfonts/h2
+    container_name: h2-database
+    ports:
+      - "8082:8082"
+    environment:
+      - H2_OPTIONS=-web -webAllowOthers -tcp -tcpAllowOthers
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: servico-auditor-dlq
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ""
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+
+custom:
+  queue:
+    dlq-name: test-dlq-queue
+
+logging:
+  level:
+    root: WARN
+    com.auditor.dlq: DEBUG
